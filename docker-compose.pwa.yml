@@ -1,0 +1,56 @@
+version: '3'
+services:
+# proxy service that creates a reverse proxy to the pwa container - https://bit.ly/2HpZJDI
+  # the reverse proxy connects the SSL/TLS certs created on the local file system into the nginx container
+  # this allows the pwa container to be accessible over HTTPS
+  # it also proxies requests to the configured domain running at the configured port for the pwa container
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    ports:
+      - "9443:443"
+    volumes:
+      - ssldata:/etc/nginx/certs
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: unless-stopped
+    depends_on:
+      - pwa
+
+  pwa:
+    #development image
+    image: bergerrc/magento2-pwa:10.0.0
+    environment:
+      # environment variables consumed by the nginx-proxy service
+      VIRTUAL_HOST: pwa.test
+      VIRTUAL_PORT: 9443
+    env_file: env/pwa.env
+    expose:
+      - 9443
+    volumes:
+      - ./src/upward.yml:/usr/src/app/node_modules/@magento/venia-concept/dist/upward.yml
+    #configs:
+    #  - source: upward_config
+    #    target: /usr/src/app/node_modules/@magento/venia-concept/dist/upward.yml
+    networks: 
+      default:
+        aliases:
+          - pwa
+          - pwa.test
+          - pwa.localhost
+    depends_on:
+      - phpfpm
+
+  #copycfg:
+  #  image: helt/docker-scp
+  #  links:
+  #    - pwa
+  #    - phpfpm
+  #  command: scp pwa:/usr/src/app/node_modules/@magento/venia-concept/dist/upward.yml phpfpm:/var/www/html/upward.yml
+
+  phpfpm:
+    volumes:
+      - ./src/upward.yml:/var/www/html/upward.yml:cached
+    environment:
+      - MAGENTO_BACKEND_URL=https://magento.internal:8443/
+
+configs:
+  upward_config:

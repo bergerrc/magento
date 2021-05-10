@@ -1,0 +1,14 @@
+src/
+env/db.env
+env/magento.env
+env/pwa.env
+modules/
+modules/readme.txt
+notes
+*.zip
+nginx.crt
+web/www/test.php
+.vscode
+bin/*
+!bin/init
+web/certs/*

@@ -1,0 +1,3 @@
+#!/bin/bash
+set -o errexit
+curl -s https://raw.githubusercontent.com/bergerrc/docker-magento/master/lib/template | bash
