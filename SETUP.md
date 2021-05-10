@@ -1,12 +1,12 @@
-# Setup
+## Setup
 
-## New Magento 2 Project (macOS/Linux/ Docker WSL for Windows)
+### New Magento 2 Project (Docker WSL for Windows / macOS / Linux)
 
 1. Clone this repository and init workspace
-´´´
+```
 git clone https://github.com/bergerrc/magento.git
 bin/init
-´´´
+```
 
 2. Extract the contents of your current Magento site to the `src` folder, or download a fresh copy of the Magento source code for starting a new project with:
     - `bin/download` (defaults to 2.4.2 community)
@@ -16,17 +16,17 @@ bin/init
 
 4. Setup your own variables in ./env
     - Copy `./env/db.env.sample` to `./env/db.env` and edit at least these variables
-    ´´´
+    ```
     MYSQL_PASSWORD=PUT_YOUR_OWNER_PASSWORD_HERE
     MYSQL_INTEGRATION_ROOT_PASSWORD=PUT_YOUR_MASTER_PASSWORD_HERE
     MYSQL_INTEGRATION_PASSWORD=PUT_ANOTHER_PASSWORD_HERE
-    ´´´
+    ```
     - Copy `./env/magento.env.sample` to `./env/magento.env`  and edit at least these variables
-    ´´´
+    ```
     MAGENTO_ADMIN_EMAIL=admin@example.com
     MAGENTO_ADMIN_USER=admin
     MAGENTO_ADMIN_PASSWORD=PUT_YOUR_ADMIN_PASSWORD_HERE
-    ´´´
+    ```
 
 5. Composer Authentication
 
