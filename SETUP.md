@@ -1,27 +1,35 @@
 ## Setup
 
-### New Magento 2 Project (Docker WSL for Windows / macOS / Linux)
+### Pre requisites
+
+  - Git Client
+
+### New Magento 2 Project 
+
+Note: It works on Docker WSL for Windows / macOS / Linux
 
 1. Clone this repository and init workspace
 ```
 git clone https://github.com/bergerrc/magento.git
 bin/init
 ```
+The cli command `init` will checkout useful commands for Magento administration and init git in your local project.
 
-2. Extract the contents of your current Magento site to the `src` folder, or download a fresh copy of the Magento source code for starting a new project with:
+2. Download a fresh copy of the Magento source code for starting a new project with:
     - `bin/download` (defaults to 2.4.2 community)
 
-3. Add an entry to your local hosts file with your custom domain. Assuming the domain you want to setup is `magento2.test`, enter the below. Be sure to use a `.test` tld, as `.localhost` and `.dev` will present issues with domain resolution.
-    - `echo "127.0.0.1 magento2.test" | sudo tee -a /etc/hosts`
+3. Define your custom domain (see `BASE_URL` below), and add an entry to your local hosts file with your custom domain. Be sure to use a tld different of `.localhost` and `.dev` that will present issues with domain resolution.
+    - `export BASE_URL=magento2.test`
+    - `echo "127.0.0.1 $BASE_URL" | sudo tee -a /etc/hosts`
 
 4. Setup your own variables in ./env
-    - Copy `./env/db.env.sample` to `./env/db.env` and edit at least these variables
+    - Edit `env/db.env` for the sensitive variables
     ```
     MYSQL_PASSWORD=PUT_YOUR_OWNER_PASSWORD_HERE
     MYSQL_INTEGRATION_ROOT_PASSWORD=PUT_YOUR_MASTER_PASSWORD_HERE
     MYSQL_INTEGRATION_PASSWORD=PUT_ANOTHER_PASSWORD_HERE
     ```
-    - Copy `./env/magento.env.sample` to `./env/magento.env`  and edit at least these variables
+    - Edit `env/magento.env` for the sensitive variables
     ```
     MAGENTO_ADMIN_EMAIL=admin@example.com
     MAGENTO_ADMIN_USER=admin
@@ -30,17 +38,17 @@ bin/init
 
 5. Composer Authentication
 
-First setup Magento Marketplace authentication (details in the [DevDocs](http://devdocs.magento.com/guides/v2.0/install-gde/prereq/connect-auth.html)).
+    First setup Magento Marketplace authentication (details in the [DevDocs](http://devdocs.magento.com/guides/v2.0/install-gde/prereq/connect-auth.html)).
 
-Copy `src/auth.json.sample` to `src/auth.json`. Then, update the username and password values with your Magento public and private keys, respectively. 
+    Copy `src/auth.json.sample` to `src/auth.json`. Then, update the username and password values with your Magento public and private keys, respectively. 
 
 6. Start your Docker containers with the provided helper script:
     - `bin/start`
 
 7. Copy the composer file to the container by running `bin/copytocontainer auth.json`.
 
-8. Run Magento's setup install process with the below helper script. Feel free to edit this file to your liking; at the very least you will probably need to update the `base-url` value to the domain you setup in step 3. 
-    - `bin/setup magento2.test`
+8. Run Magento's setup install process with the below helper script.
+    - `bin/setup $BASE_URL`
 
 9. You may now access your site! Check out whatever domain you setup from within a web browser.
-    - `open http://magento2.test`
+    - `open https://magento2.test` (or your defined custom domain)
