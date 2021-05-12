@@ -24,8 +24,6 @@ services:
       - ./src/nginx.conf.sample:/var/www/html/nginx.conf:cached
       - ./src/var/log:/var/www/html/var/log:cached
       - ./src/var/report:/var/www/html/var/report:cached
-      - ./modules:/mnt/modules:cached
-      #- ./modules/beeapps-attributes-management:/var/www/html/app/code/Beeapps/AttributesManagement:cached
       #- ./src/auth.json:/var/www/html/auth.json:cached
       #- ./src/m2-hotfixes:/var/www/html/m2-hotfixes:cached
       #- ./src/patches:/var/www/html/patches:cached
