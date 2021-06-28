@@ -1,0 +1,23 @@
+web_addr: 0.0.0.0:4040
+authtoken: 1sSM8ir3Edt0rtywQf6lt7DmdxM_6BtQHRJQ1KJ5HDzoDQWKe
+tunnels:
+  base_app:
+    region: sa
+#    addr: 80
+#    proto: http
+    addr: 80
+    proto: "http"
+    host_header: "magento2.test"
+    bind_tls: true
+#    crt: /etc/nginx/certs/nginx.crt
+#    key: /etc/nginx/certs/nginx.key
+  demo_app:
+    region: sa
+#    addr: 80
+#    proto: "http"
+    addr: 80
+    proto: http
+    host_header: "demo.merlu.app"
+    bind_tls: true
+#    crt: /etc/nginx/certs/demo_merlu_app.crt
+#    key: /etc/nginx/certs/demo_merlu_app.key
