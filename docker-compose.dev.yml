@@ -13,7 +13,7 @@ services:
     networks:
       erpnet:
         aliases:
-          - magento2.test
+          - magento.test
     volumes: &appvolumes
       # Host mounts with performance penalty, only put what is necessary here
       - ./src/app/code:/var/www/html/app/code:cached
@@ -24,6 +24,12 @@ services:
       - ./src/nginx.conf.sample:/var/www/html/nginx.conf:cached
       - ./src/var/log:/var/www/html/var/log:cached
       - ./src/var/report:/var/www/html/var/report:cached
+      - ../magento2-modules/beeapps-theme-merlu-basic:/var/www/html/app/design/frontend/Beeapps/theme-merlu-basic
+      - ../magento2-modules/beeapps-m2-customer-addressbystore:/var/www/html/app/code/Beeapps/CustomerAddressByStore
+      - ../magento2-modules/beeapps-m2-attributes-management:/var/www/html/app/code/Beeapps/AttributesManagement
+      - ../magento2-modules/magento-module-custom-attribute-management:/var/www/html/app/code/Magento/CustomAttributeManagement
+      - ../magento2-modules/magento-module-customer-custom-attributes:/var/www/html/app/code/Magento/CustomerCustomAttributes
+      - ../magento2-modules/magento-ngrok:/var/www/html/app/code/Shkoliar/Ngrok
       #- ./src/auth.json:/var/www/html/auth.json:cached
       #- ./src/m2-hotfixes:/var/www/html/m2-hotfixes:cached
       #- ./src/patches:/var/www/html/patches:cached
@@ -31,6 +37,21 @@ services:
       #- ~/.ssh/id_rsa:/var/www/.ssh/id_rsa:cached
       # Linux only: remove the above lines and mount the entire src directory with:
       #- ./src:/var/www/html:cache
+
+  ngrok:
+    image: wernight/ngrok
+    command: ngrok start base_app
+    #entrypoint: /wrapper_entrypoint.sh
+    extra_hosts:
+      - "localhost:172.20.0.8"
+    ports:
+      - "4040:4040"
+    depends_on:
+      - app
+    volumes:
+      - ./ngrok.yml:/home/ngrok/.ngrok2/ngrok.yml:cached
+      - ./ngrok_wrapper_entrypoint.sh:/wrapper_entrypoint.sh
+      #- ssldata:/etc/nginx/certs:rw
 
   phpfpm:
     #extra_hosts:
